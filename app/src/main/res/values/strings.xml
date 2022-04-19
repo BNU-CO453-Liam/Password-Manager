@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Password Manager</string>
+    <string name="app_name1">Vast Pass v1.0</string>
+
+    <string name="login_email">Enter Email</string>
+    <string name="login_password">Enter Password</string>
+
+    <string name="login_login">Login</string>
+    <string name="login_register">Register</string>
+
+    <string name="register_email">Enter Email</string>
+    <string name="register_password">Enter Password</string>
+
+    <string name="register_register">Register</string>
+    <string name="register_login">Login</string>
+
+    <string name="Accounts">Accounts</string>
+    <string name="AddNew"><u>Add new</u></string>
+
+    <string name="MyProfile">My Profile</string>
+    <string name="AddAccount">Add Account</string>
+    <string name="ViewAccount">View Account</string>
+
+    <string name="EditAccount">Edit Account</string>
+    <string name="UpdateAccount">Update Account</string>
+    <string name="DeleteAccount">Delete Account</string>
+
+    <string name="EditProfile">Edit Profile</string>
+    <string name="UpdateProfile">Update Profile</string>
+    <string name="DeleteProfile">Delete Profile</string>
+    <string name="ProfileEmail">email</string>
+
+</resources>

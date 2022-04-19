@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "953014215800",
+    "project_id": "passwordmanager-b69fb",
+    "storage_bucket": "passwordmanager-b69fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:953014215800:android:9217992cbc9e709ccbb98d",
+        "android_client_info": {
+          "package_name": "com.passwordmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "953014215800-qo8agdrr890pktg7piolvc6jghlce5jt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.passwordmanager",
+            "certificate_hash": "2fa5e4a2afcd14b83680070bddd0e56a0154a9f3"
+          }
+        },
+        {
+          "client_id": "953014215800-0fqu1g9k38amfr6pauva6848aau3a2uk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsOxANkyG8a9GpSuhguR_1wwB5esOSufE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "953014215800-0fqu1g9k38amfr6pauva6848aau3a2uk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
