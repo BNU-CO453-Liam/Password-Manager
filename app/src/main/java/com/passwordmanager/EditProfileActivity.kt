@@ -6,14 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.passwordmanager.handlers.AccountDbHandler
 import com.passwordmanager.handlers.UserDbHandler
-import com.passwordmanager.models.AccModelClass
 import com.passwordmanager.models.UserModelClass
 
 class EditProfileActivity : AppCompatActivity() {
@@ -22,15 +23,17 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
-        val etProfileEmail = findViewById<EditText>(R.id.et_profile_email)
-        val etPassword = findViewById<EditText>(R.id.et_profile_passwd)
-
+        // get values from intent
         val email = intent.getStringExtra("username")
         val passwd = intent.getStringExtra("passwd")
 
+        // get elements
+        val etProfileEmail = findViewById<EditText>(R.id.et_profile_email)
+        val etPassword = findViewById<TextView>(R.id.tv_profile_passwd)
         val backBtn = findViewById<FloatingActionButton>(R.id.back_btn)
         val updateBtn = findViewById<Button>(R.id.btn_update_profile)
         val deleteBtn = findViewById<Button>(R.id.btn_delete_profile)
+        val resetPassword = findViewById<TextView>(R.id.reset_password)
 
         // set field hints
         etProfileEmail.hint = email
@@ -47,18 +50,19 @@ class EditProfileActivity : AppCompatActivity() {
 
         // Click event of update button
         updateBtn.setOnClickListener {
-            val localUpdate = updateProfile(userModel)
-            val cloudUpdate = updateFire()
+            updateProfile(userModel)
+            updateFirebase()
         }
 
         // Click event of delete button
         deleteBtn.setOnClickListener {
+
             val databaseHandlerProfile = UserDbHandler(this)
             val databaseHandlerAccount = AccountDbHandler(this)
 
             val builder = AlertDialog.Builder(this)
             //set title for alert dialog
-            builder.setTitle("Delete Record")
+            builder.setTitle("Delete Profile")
             //set message for alert dialog
             builder.setMessage("Are you sure you wants to delete your profile?" +
                     "All passwords will be deleted.")
@@ -73,17 +77,11 @@ class EditProfileActivity : AppCompatActivity() {
                 // delete password accounts
                 databaseHandlerAccount.deleteAll()
 
-                Toast.makeText(
-                    applicationContext,
-                    "Profile deleted successfully.",
-                    Toast.LENGTH_LONG
-                ).show()
-
                 // dismiss dialogue
                 dialogInterface.dismiss()
 
-                // sign out user
-                FirebaseAuth.getInstance().signOut()
+                // delete firebase user
+                deleteFirebase()
 
                 // re direct to login
                 startActivity(Intent(this@EditProfileActivity, LoginActivity::class.java))
@@ -100,25 +98,55 @@ class EditProfileActivity : AppCompatActivity() {
                 alertDialog.show()
 
         }
+
+        // Click event of password reset button
+        resetPassword.setOnClickListener {
+            Firebase.auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(
+                            this@EditProfileActivity,
+                            "An email has been sent successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+        }
     }
 
-    private fun updateFire() {
+    /**
+     * delete firebase user
+     */
+    private fun deleteFirebase() {
+        val user = Firebase.auth.currentUser
+
+        user!!.delete()
+            .addOnSuccessListener {
+                    // show message
+                    Toast.makeText(
+                        applicationContext,
+                        "Profile deleted successfully.",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+            }
+    }
+
+    /**
+     * Update firebase email
+     */
+    private fun updateFirebase() {
 
         // get elements
         val etProfileEmail = findViewById<EditText>(R.id.et_profile_email)
-        val etPassword = findViewById<EditText>(R.id.et_profile_passwd)
 
         // set text of elements
         val newEmail = etProfileEmail.text.toString().trim { it <= ' ' }
-        val newPasswd = etPassword.text.toString().trim { it <= ' ' }
 
+        // get current firebase user
         val user = Firebase.auth.currentUser
-        //val newPassword = "$newPasswd"
-        //val newerEmail = "$newEmail"
 
-        // try by email reset
-        //user.updatePassword(newPasswd)
-
+        // update firebase user email
         user!!.updateEmail("$newEmail")
             .addOnSuccessListener {
                 Toast.makeText(applicationContext, "Profile updated",
@@ -134,21 +162,16 @@ class EditProfileActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
-
-        // This will not work in conjunction with email update
-        //user!!.updatePassword("$newPassword")
-        //    .addOnSuccessListener {
-        //    }
     }
 
     /**
-     * Update profile
+     * Update local profile info
      */
     private fun updateProfile(UserModelClass: UserModelClass) {
 
         // get elements
         val etProfileEmail = findViewById<EditText>(R.id.et_profile_email)
-        val etPassword = findViewById<EditText>(R.id.et_profile_passwd)
+        val etPassword = findViewById<TextView>(R.id.tv_profile_passwd)
 
         // set values of text input
         val newEmail = etProfileEmail.text.toString().trim { it <= ' ' }

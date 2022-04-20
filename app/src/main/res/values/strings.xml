@@ -30,4 +30,8 @@
     <string name="DeleteProfile">Delete Profile</string>
     <string name="ProfileEmail">email</string>
 
+    <string name="ResetPassword"><u>Reset Password</u></string>
+    <string name="ForgotPassword"><u>Forgot Password</u></string>
+    <string name="must">Password must be reset by email</string>
+
 </resources>

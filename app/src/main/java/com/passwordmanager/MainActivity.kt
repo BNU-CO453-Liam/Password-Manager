@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         // get elements
         val btnLogout = findViewById<Button>(R.id.btn_logout)
-        val btnAddNew = findViewById<TextView>(R.id.acc_add_new)
+        val btnAddNew = findViewById<FloatingActionButton>(R.id.acc_add_new)
         val viewProfile = findViewById<FloatingActionButton>(R.id.viewProfile)
 
         // Logout user
@@ -109,8 +109,8 @@ class MainActivity : AppCompatActivity() {
      */
     private fun getItemsList(): ArrayList<AccModelClass> {
         //creating the instance of DatabaseHandler class
-        val databaseHandlerAccount: AccountDbHandler = AccountDbHandler(this)
-        //calling the viewAccount method of DatabaseHandler class to read the records
+        val databaseHandlerAccount = AccountDbHandler(this)
+        // read the records
         val accList: ArrayList<AccModelClass> = databaseHandlerAccount.viewAccount()
 
         return accList

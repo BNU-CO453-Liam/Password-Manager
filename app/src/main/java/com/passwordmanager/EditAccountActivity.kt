@@ -17,6 +17,7 @@ class EditAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_account)
 
+        // Get elements
         val accName = findViewById<EditText>(R.id.et_edit_acc_name)
         val accUsername = findViewById<EditText>(R.id.et_edit_acc_username)
         val accPasswd = findViewById<EditText>(R.id.et_edit_acc_passwd)
@@ -55,40 +56,60 @@ class EditAccountActivity : AppCompatActivity() {
      */
     private fun updateAccount(accModelClass: AccModelClass) {
 
-        val accName = findViewById<EditText>(R.id.et_edit_acc_username)
+        // get intent values
+        val accId = intent.getIntExtra("id", 0)
+        val name = intent.getStringExtra("name")
+        val username = intent.getStringExtra("username")
+        val passwd = intent.getStringExtra("passwd")
+
+        // get elements
+        val accName = findViewById<EditText>(R.id.et_edit_acc_name)
         val accUsername = findViewById<EditText>(R.id.et_edit_acc_username)
         val accPasswd = findViewById<EditText>(R.id.et_edit_acc_passwd)
 
-        val newAccName = accName.text.toString().trim()
-        val newUsername = accUsername.text.toString().trim()
-        val newPasswd = accPasswd.text.toString().trim()
+        // set values of user input
+        var newAccName = accName.text.toString().trim()
+        var newUsername = accUsername.text.toString().trim()
+        var newPasswd = accPasswd.text.toString().trim()
 
-        val databaseHandlerAccount: AccountDbHandler = AccountDbHandler(this)
+        // set database handler
+        val databaseHandlerAccount = AccountDbHandler(this)
 
-        if (newAccName.isNotEmpty() && newUsername.isNotEmpty() && newPasswd.isNotEmpty()) {
-            val status = databaseHandlerAccount.updateAccount(
-                AccModelClass(
-                    accModelClass.id,
-                    newAccName,
-                    newUsername,
-                    newPasswd
-                )
-            )
-
-            if (status > -1) {
-                Toast.makeText(applicationContext, "Account updated", Toast.LENGTH_SHORT).show()
-
-                // re-direct to login and clear previous activities
-                val intent = Intent(this@EditAccountActivity, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                finish()
-            } else {
-                Toast.makeText(
-                    applicationContext, "Ensure fields are not blank",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+        /**
+         * keep original values if null or blank
+         */
+        if (newAccName.isNullOrBlank()) {
+            newAccName = name!!
         }
+
+        if (newUsername.isNullOrBlank()) {
+            newUsername = username!!
+        }
+
+        if (newPasswd.isNullOrBlank()) {
+            newPasswd = passwd!!
+        }
+
+        // create model
+        val accModel = AccModelClass(id = accId, accName = newAccName, username = newUsername, passwd = newPasswd)
+
+        // if fields are not empty then update account
+        val status = databaseHandlerAccount.updateAccount(accModel)
+
+        if (status > -1) {
+            Toast.makeText(applicationContext, "Account updated", Toast.LENGTH_SHORT).show()
+
+            // re-direct to login and clear previous activities
+            val intent = Intent(this@EditAccountActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        } else {
+            Toast.makeText(
+                applicationContext, "Ensure fields are not blank",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
     }
 }

@@ -51,22 +51,8 @@ class RegisterActivity : AppCompatActivity() {
                     ).show()
                 }
                 else -> {
-                    //val email: String = entEmail.text.toString().trim { it <= ' ' }
-                    //val password: String = entPassword.text.toString().trim { it <= ' ' }
-
-                    // Check how many profiles exist
-                    val profileCount = databaseHandler.getCount()
-
-                    if (profileCount > 0) {
-                        Toast.makeText(
-                            applicationContext,
-                            "A Profile already exists on this device",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-                        addProfile()
-                        registerUser()
-                    }
+                    addProfile()
+                    registerUser()
                 }
             }
         }
@@ -100,20 +86,25 @@ class RegisterActivity : AppCompatActivity() {
                         // Firebase registered user
                         val firebaseUser: FirebaseUser = task.result!!.user!!
 
+                        // send email verification
+                        firebaseUser.sendEmailVerification()
+
                         Toast.makeText(
                             this@RegisterActivity,
                             "You have been registered successfully.",
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        // Re-direct to the main screen with user id and email used for registration
-                        val intent = Intent(this@RegisterActivity, MainActivity::class.java)
 
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        intent.putExtra("user_id", firebaseUser.uid)
-                        intent.putExtra("email_id", email)
-                        startActivity(intent)
+                        // Re-direct to the main screen with user id and email used for registration
+                        //val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+
+                        //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        //intent.putExtra("user_id", firebaseUser.uid)
+                        //intent.putExtra("email_id", email)
+                        //startActivity(intent)
                         finish()
+                        FirebaseAuth.getInstance().signOut()
                     } else {
                         // If register unsuccessful display error
                         Toast.makeText(
@@ -160,5 +151,14 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
         }
+    }
+
+    private fun sendEmailVerification() {
+
+        val firebaseAuth = FirebaseAuth.getInstance()
+
+        val user = firebaseAuth.currentUser
+
+        user!!.sendEmailVerification()
     }
 }

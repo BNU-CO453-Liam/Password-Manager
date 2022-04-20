@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.ToxicBakery.library.bcrypt:bcrypt-jvm:1.0.9">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ToxicBakery.library.bcrypt/bcrypt-jvm/1.0.9/434cf9c03959088a9560b5bcbddff5ca5726d072/bcrypt-jvm-1.0.9.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ToxicBakery.library.bcrypt/bcrypt-jvm/1.0.9/d0c6f7343cb17ea7edfeec517ac9a38dd60cfdb5/bcrypt-jvm-1.0.9-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ToxicBakery.library.bcrypt/bcrypt-jvm/1.0.9/cbb7e33cbaf4a536c29abd9acd0d59b8532cd405/bcrypt-jvm-1.0.9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

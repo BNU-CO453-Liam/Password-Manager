@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.passwordmanager.handlers.UserDbHandler
 
 class ViewProfileActivity : AppCompatActivity() {
@@ -29,11 +31,13 @@ class ViewProfileActivity : AppCompatActivity() {
 
         getInfo()
 
+        // get elements
         val backBtn = findViewById<FloatingActionButton>(R.id.back_btn)
         val editBtn = findViewById<Button>(R.id.btn_edit_profile)
         val userEmail = findViewById<TextView>(R.id.et_profile_email)
-        val passwd = findViewById<TextView>(R.id.et_profile_passwd)
+        val passwd = findViewById<TextView>(R.id.tv_profile_passwd)
 
+        // set text of elements
         userEmail.text = email
         passwd.text = "00000000"
 
@@ -48,7 +52,7 @@ class ViewProfileActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Confirm")
                 .setMessage("Are you sure you want to edit your profile?")
-                .setPositiveButton("Yes") {d,e->
+                .setPositiveButton("Yes") { _, _ ->
                     intent = Intent(this@ViewProfileActivity, EditProfileActivity::class.java)
                     intent.putExtra("id", id)
                     intent.putExtra("username", email)
@@ -56,48 +60,25 @@ class ViewProfileActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 }
-                .setNegativeButton("Cancel") {d,e ->
+                .setNegativeButton("Cancel") { d, _ ->
                     d.dismiss()
                 }
                 .show()
         }
     }
 
-    private fun sendEmailVerification() {
-
-        val firebaseAuth = FirebaseAuth.getInstance()
-
-        val user = firebaseAuth.currentUser
-        user!!.sendEmailVerification()
-            .addOnSuccessListener {
-                if (user.isEmailVerified) {
-                    intent = Intent(this@ViewProfileActivity, EditProfileActivity::class.java)
-                    intent.putExtra("id", id)
-                    intent.putExtra("username", email)
-                    intent.putExtra("passwd", pass)
-                    startActivity(intent)
-                    finish()
-                }
-            }
-            .addOnFailureListener {
-                Toast.makeText(
-                    this@ViewProfileActivity,
-                    "Verification unsuccessful",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-    }
-
     /**
      * Get profile information
      */
     private fun getInfo() {
-        val dbHandler: UserDbHandler = UserDbHandler(this)
+        val dbHandler = UserDbHandler(this)
 
         val details = dbHandler.viewProfile()
 
-        id = details[0].id
-        email = details[0].username
-        pass = details[0].passwd
+        if (details.count() > 0) {
+            id = details[0].id
+            email = details[0].username
+            pass = details[0].passwd
+        }
     }
 }
