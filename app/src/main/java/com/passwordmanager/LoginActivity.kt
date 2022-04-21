@@ -19,6 +19,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.passwordmanager.handlers.UserDbHandler
 
+/**
+ * Activity where users can log in to the app
+ */
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +30,8 @@ class LoginActivity : AppCompatActivity() {
         /**
          * REMOVE THIS AFTER TESTING
          */
-        val dbHandler = UserDbHandler(this)
-        dbHandler.deleteAll()
+        //val dbHandler = UserDbHandler(this)
+        //dbHandler.deleteAll()
 
         // get reference to elements
         val button = findViewById<Button>(R.id.btn_login)

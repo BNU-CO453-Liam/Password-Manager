@@ -12,11 +12,15 @@ import com.passwordmanager.handlers.AccountDbHandler
 import com.passwordmanager.models.AccModelClass
 import kotlin.random.Random
 
+/**
+ * Activity where users can add new password accounts
+ */
 class AddAccountActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_account)
 
+        // Get elements
         val inputAccName = findViewById<EditText>(R.id.et_acc_name)
         val inputAccUserName = findViewById<EditText>(R.id.et_acc_user_name)
         val inputAccPasswd = findViewById<EditText>(R.id.et_acc_passwd)

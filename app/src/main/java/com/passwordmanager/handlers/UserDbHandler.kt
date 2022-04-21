@@ -12,7 +12,6 @@ import com.passwordmanager.models.UserModelClass
 
 class UserDbHandler(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-
     companion object {
         private const val DATABASE_VERSION = 1
         private const val DATABASE_NAME = "UserDatabase"
@@ -20,14 +19,13 @@ class UserDbHandler(context: Context) :
 
         private const val KEY_ID = "_id"
         private const val KEY_USERNAME = "username"
-        private const val KEY_PASSWD = "password"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
         // create table and fields
         val CREATE_ACCOUNTS_TABLE = ("CREATE TABLE " + TABLE_PROFILES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
-                + KEY_USERNAME + " TEXT," + KEY_PASSWD + " TEXT)")
+                + KEY_USERNAME + " TEXT)")
         db?.execSQL(CREATE_ACCOUNTS_TABLE)
     }
 
@@ -44,7 +42,6 @@ class UserDbHandler(context: Context) :
 
         val contentValues = ContentValues()
         contentValues.put(KEY_USERNAME, profile.username)
-        contentValues.put(KEY_PASSWD, profile.passwd)
 
         // Insert account details using insert query.
         val success = db.insert(TABLE_PROFILES, null, contentValues)
@@ -61,11 +58,14 @@ class UserDbHandler(context: Context) :
     fun viewProfile(): ArrayList<UserModelClass> {
 
         val profileList: ArrayList<UserModelClass> = ArrayList<UserModelClass>()
+        var id: Int
+        var username: String
 
         // Query to select all the records from the table.
         val selectQuery = "SELECT  * FROM $TABLE_PROFILES"
 
         val db = this.readableDatabase
+
         // Cursor is used to read the record one by one. Add them to data model class.
         var cursor: Cursor? = null
 
@@ -77,21 +77,19 @@ class UserDbHandler(context: Context) :
             return ArrayList()
         }
 
-        var id: Int
-        var username: String
-        var passwd: String
-
         if (cursor.moveToFirst()) {
             do {
                 id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
                 username = cursor.getString(cursor.getColumnIndex(KEY_USERNAME))
-                passwd = cursor.getString(cursor.getColumnIndex(KEY_PASSWD))
+                //passwd = cursor.getString(cursor.getColumnIndex(KEY_PASSWD))
 
-                val profile = UserModelClass(id = id, username = username, passwd = passwd)
+                val profile = UserModelClass(id = id, username = username)
                 profileList.add(profile)
 
             } while (cursor.moveToNext())
         }
+        // Close database connection
+        db.close()
         return profileList
     }
 
@@ -99,27 +97,13 @@ class UserDbHandler(context: Context) :
      * Update data in database
      */
     fun updateProfile(profile: UserModelClass): Int {
+
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(KEY_USERNAME, profile.username)
-        contentValues.put(KEY_PASSWD, profile.passwd)
 
         // update row
         val success = db.update(TABLE_PROFILES, contentValues, KEY_ID + "=" + profile.id, null)
-        db.close()
-        return success
-    }
-
-    /**
-     * Delete data from the database
-     */
-    fun deleteProfile(profile: UserModelClass): Int {
-        val db = this.writableDatabase
-        val contentValues = ContentValues()
-        contentValues.put(KEY_ID, profile.id)
-
-        val success = db.delete(TABLE_PROFILES, KEY_ID + "=" + profile.id, null)
-
         db.close()
         return success
     }
@@ -147,5 +131,6 @@ class UserDbHandler(context: Context) :
         val db = this.writableDatabase
         val dropTable = db.execSQL("DROP TABLE UserTable")
         onCreate(db)
+        db.close()
     }
 }

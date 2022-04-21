@@ -13,11 +13,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.passwordmanager.handlers.UserDbHandler
 
+/**
+ * Activity where users can view their profile.
+ */
 class ViewProfileActivity : AppCompatActivity() {
 
     var id = 0
     var email = ""
-    var pass = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +28,8 @@ class ViewProfileActivity : AppCompatActivity() {
         /**
          * REMOVE THIS AFTER TESTING
          */
-        //val dbHandler: UserDbHandler = UserDbHandler(this)
-        //dbHandler.deleteAll()
+        val dbHandler: UserDbHandler = UserDbHandler(this)
+        dbHandler.deleteAll()
 
         getInfo()
 
@@ -56,7 +58,6 @@ class ViewProfileActivity : AppCompatActivity() {
                     intent = Intent(this@ViewProfileActivity, EditProfileActivity::class.java)
                     intent.putExtra("id", id)
                     intent.putExtra("username", email)
-                    intent.putExtra("passwd", pass)
                     startActivity(intent)
                     finish()
                 }
@@ -78,7 +79,6 @@ class ViewProfileActivity : AppCompatActivity() {
         if (details.count() > 0) {
             id = details[0].id
             email = details[0].username
-            pass = details[0].passwd
         }
     }
 }

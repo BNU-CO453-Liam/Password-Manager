@@ -3,7 +3,9 @@ package com.passwordmanager.models
 import android.os.Parcel
 import android.os.Parcelable
 
-// Account model class
+/**
+ * Password account model class
+ */
 class AccModelClass(val id: Int, val accName: String?, val username: String?, val passwd: String?) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -32,13 +34,5 @@ class AccModelClass(val id: Int, val accName: String?, val username: String?, va
         override fun newArray(size: Int): Array<AccModelClass?> {
             return arrayOfNulls(size)
         }
-    }
-
-    fun getAccId(): Int {
-        return this.id
-    }
-
-    fun getAcName(): String? {
-        return this.accName
     }
 }

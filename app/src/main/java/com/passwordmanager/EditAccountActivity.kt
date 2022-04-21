@@ -11,6 +11,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.passwordmanager.handlers.AccountDbHandler
 import com.passwordmanager.models.AccModelClass
 
+/**
+ * Activity where users can edit a password account
+ */
 class EditAccountActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,6 +99,7 @@ class EditAccountActivity : AppCompatActivity() {
         // if fields are not empty then update account
         val status = databaseHandlerAccount.updateAccount(accModel)
 
+        // if update does not fail
         if (status > -1) {
             Toast.makeText(applicationContext, "Account updated", Toast.LENGTH_SHORT).show()
 

@@ -104,7 +104,6 @@ class RegisterActivity : AppCompatActivity() {
                         //intent.putExtra("email_id", email)
                         //startActivity(intent)
                         finish()
-                        FirebaseAuth.getInstance().signOut()
                     } else {
                         // If register unsuccessful display error
                         Toast.makeText(
@@ -134,7 +133,7 @@ class RegisterActivity : AppCompatActivity() {
         // if fields are not empty, add profile to local database
         if (profileUserName.isNotEmpty() && profilePasswd.isNotEmpty()) {
             val status =
-                databaseHandler.addProfile(UserModelClass(0,profileUserName, profilePasswd))
+                databaseHandler.addProfile(UserModelClass(0,profileUserName))
             if (status > -1) {
 
                 // start new activity and clear old activity of main task
@@ -151,14 +150,5 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
         }
-    }
-
-    private fun sendEmailVerification() {
-
-        val firebaseAuth = FirebaseAuth.getInstance()
-
-        val user = firebaseAuth.currentUser
-
-        user!!.sendEmailVerification()
     }
 }

@@ -16,15 +16,15 @@ class ItemAdapter(val context: Context, val items: ArrayList<AccModelClass>) :
 
     private lateinit var mListener : onItemClickListener
 
+    // interface for recycler view listener
     interface onItemClickListener {
         fun onItemClick(position: Int)
     }
 
+    // set on click listener for each recycler view item
     fun setOnItemClickListener(listener: onItemClickListener){
         mListener = listener
     }
-
-    //var onItemClick : ((AccModelClass) -> Unit)? = null
 
     /**
      * Inflates the item views which is designed in xml layout file
@@ -41,31 +41,16 @@ class ItemAdapter(val context: Context, val items: ArrayList<AccModelClass>) :
     }
 
     /**
-     * Binds each item in the ArrayList to a view
-     *
-     * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
-     * an item.
-     *
-     * This new ViewHolder should be constructed with a new View that can represent the items
-     * of the given type. You can either create a new View manually or inflate it from an XML
-     * layout file.
+     * Called when RecyclerView to bind each item in the ArrayList to a view
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val item = items.get(position)
-        val account = items[position]
 
         holder.tvItem.text = item.accName.toString()
         holder.tvItem.id = item.id
 
-
-
-        // set on click for holder view
-        //holder.itemView.setOnClickListener{
-           // onItemClick?.invoke(account)
-        //}
-
-        // Updating the background color according to the odd/even positions in list.
+        // Set background color according to the odd/even positions in list.
         if (position % 2 == 0) {
             holder.cardViewItem.setBackgroundColor(
                 ContextCompat.getColor(
@@ -84,7 +69,7 @@ class ItemAdapter(val context: Context, val items: ArrayList<AccModelClass>) :
     }
 
     /**
-     * Gets the number of items in the list
+     * Get the number of items in the list
      */
     override fun getItemCount(): Int {
         return items.size
@@ -95,7 +80,6 @@ class ItemAdapter(val context: Context, val items: ArrayList<AccModelClass>) :
      */
     class ViewHolder(view: View, listener: onItemClickListener) : RecyclerView.ViewHolder(view) {
 
-
         // Holds the TextView that will add each item to
         val tvItem = view.findViewById<TextView>(R.id.tv_item_name)
         val cardViewItem = view.findViewById<CardView>(R.id.card_view_item)
@@ -105,17 +89,5 @@ class ItemAdapter(val context: Context, val items: ArrayList<AccModelClass>) :
                 listener.onItemClick(adapterPosition)
             }
         }
-    }
-
-    // get item names in list
-
-    fun getItemDetails(): ArrayList<String> {
-        val itemList = ArrayList<String>()
-        for (item in items) {
-            itemList.add(item.accName.toString())
-            itemList.add(item.username.toString())
-            itemList.add(item.passwd.toString())
-        }
-        return itemList
     }
 }

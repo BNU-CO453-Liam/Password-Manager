@@ -32,6 +32,9 @@ class AccountDbHandler(context: Context) :
             db?.execSQL(CREATE_ACCOUNTS_TABLE)
         }
 
+        /**
+        * upgrade database to new version
+        */
         override fun onUpgrade(db: SQLiteDatabase?, v1: Int, v2: Int) {
             db!!.execSQL("DROP TABLE IF EXISTS $TABLE_ACCOUNTS")
             onCreate(db)

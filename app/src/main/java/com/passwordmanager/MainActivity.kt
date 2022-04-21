@@ -17,6 +17,10 @@ import com.passwordmanager.handlers.UserDbHandler
 import com.passwordmanager.models.AccModelClass
 import kotlin.collections.ArrayList
 
+/**
+ * Main page of the app where the user is taken after successful login.
+ * User can view a list of password accounts
+ */
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,12 +51,11 @@ class MainActivity : AppCompatActivity() {
         // View/Edit profile
         viewProfile.setOnClickListener {
             startActivity(Intent(this@MainActivity, ViewProfileActivity::class.java))
-            //finish()
         }
     }
 
     /**
-     * Function is used to show the list on UI of inserted data.
+     * Function is used to show the list of password accounts in the recycler view.
      */
     private fun setupListofDataIntoRecyclerView() {
 
@@ -91,6 +94,7 @@ class MainActivity : AppCompatActivity() {
      * Create intent for view account
      */
     fun doIntent(adapter: ItemAdapter, Int: Int) {
+
         val intent = Intent(this, ViewAccountActivity::class.java)
         val id = adapter.items.get(Int).id
         val name = adapter.items.get(Int).accName
@@ -108,8 +112,10 @@ class MainActivity : AppCompatActivity() {
      * Function is used to get the Items List added in the database table.
      */
     private fun getItemsList(): ArrayList<AccModelClass> {
+
         //creating the instance of DatabaseHandler class
         val databaseHandlerAccount = AccountDbHandler(this)
+
         // read the records
         val accList: ArrayList<AccModelClass> = databaseHandlerAccount.viewAccount()
 

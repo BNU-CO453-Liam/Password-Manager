@@ -17,6 +17,10 @@ import com.passwordmanager.handlers.AccountDbHandler
 import com.passwordmanager.handlers.UserDbHandler
 import com.passwordmanager.models.UserModelClass
 
+/**
+ * Activity where users can edit their profile (email address),
+ * delete their profile, and send an email to reset password
+ */
 class EditProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +29,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         // get values from intent
         val email = intent.getStringExtra("username")
-        val passwd = intent.getStringExtra("passwd")
+        //val passwd = intent.getStringExtra("passwd")
 
         // get elements
         val etProfileEmail = findViewById<EditText>(R.id.et_profile_email)
@@ -37,10 +41,10 @@ class EditProfileActivity : AppCompatActivity() {
 
         // set field hints
         etProfileEmail.hint = email
-        etPassword.hint = passwd
+        //etPassword.hint = passwd
 
         // Create user model
-        val userModel = UserModelClass(1, email!!, passwd!!)
+        val userModel = UserModelClass(1, email!!)
 
         // Click event of back button
             backBtn.setOnClickListener {
@@ -175,17 +179,16 @@ class EditProfileActivity : AppCompatActivity() {
 
         // set values of text input
         val newEmail = etProfileEmail.text.toString().trim { it <= ' ' }
-        val newPasswd = etPassword.text.toString().trim { it <= ' ' }
+        //val newPasswd = etPassword.text.toString().trim { it <= ' ' }
 
         val databaseHandlerProfile: UserDbHandler = UserDbHandler(this)
 
         // if text input is not empty, update user profile
-        if (newEmail.isNotEmpty() && newPasswd.isNotEmpty()) {
+        if (newEmail.isNotEmpty()) {
             val status = databaseHandlerProfile.updateProfile(
                 UserModelClass(
                     1,
-                    newEmail,
-                    newPasswd
+                    newEmail
                 )
             )
             // display message
