@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.passwordmanager.handlers.AccountDbHandler
 import com.passwordmanager.models.AccModelClass
 import kotlin.random.Random
@@ -33,6 +35,8 @@ class AddAccountActivity : AppCompatActivity() {
          */
         fun addRecord() {
 
+            val profile = Firebase.auth.currentUser!!.uid
+
             val accName = inputAccName.text.toString().trim()
             val accUserName = inputAccUserName.text.toString().trim()
             var accPasswd = inputAccPasswd.text.toString().trim()
@@ -41,7 +45,7 @@ class AddAccountActivity : AppCompatActivity() {
 
             if (accName.isNotEmpty() && accUserName.isNotEmpty() && accPasswd.isNotEmpty()) {
                 val status =
-                    databaseHandlerAccount.addAccount(AccModelClass(0, accName, accUserName, accPasswd))
+                    databaseHandlerAccount.addAccount(AccModelClass(0, accName, accUserName, accPasswd, profile))
                 if (status > -1) {
                     Toast.makeText(applicationContext, "Account saved", Toast.LENGTH_LONG).show()
 

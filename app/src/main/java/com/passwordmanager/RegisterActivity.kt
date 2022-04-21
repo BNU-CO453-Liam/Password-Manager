@@ -24,8 +24,6 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        val databaseHandler = UserDbHandler(this)
-
         // get reference to elements
         val button = findViewById<Button>(R.id.btn_register)
         val entEmail = findViewById<EditText>(R.id.tx_register_email)
@@ -97,13 +95,13 @@ class RegisterActivity : AppCompatActivity() {
 
 
                         // Re-direct to the main screen with user id and email used for registration
-                        //val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                        //val intent = Intent(this@RegisterActivity, MainActivity::class.java)
 
                         //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         //intent.putExtra("user_id", firebaseUser.uid)
                         //intent.putExtra("email_id", email)
                         //startActivity(intent)
-                        finish()
+                        //finish()
                     } else {
                         // If register unsuccessful display error
                         Toast.makeText(
@@ -128,10 +126,10 @@ class RegisterActivity : AppCompatActivity() {
 
         // set values to user input
         val profileUserName = entEmail.text.toString().trim()
-        var profilePasswd = entPassword.text.toString().trim()
+        //var profilePasswd = entPassword.text.toString().trim()
 
         // if fields are not empty, add profile to local database
-        if (profileUserName.isNotEmpty() && profilePasswd.isNotEmpty()) {
+        if (profileUserName.isNotEmpty()) {
             val status =
                 databaseHandler.addProfile(UserModelClass(0,profileUserName))
             if (status > -1) {

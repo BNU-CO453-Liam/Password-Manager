@@ -8,6 +8,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.passwordmanager.handlers.AccountDbHandler
 import com.passwordmanager.models.AccModelClass
 
@@ -15,6 +17,8 @@ class ViewAccountActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_account)
+
+        val profile = Firebase.auth.currentUser!!.uid
 
         // Get intent values
         val accId = intent.getIntExtra("id", 0)
@@ -36,7 +40,7 @@ class ViewAccountActivity : AppCompatActivity() {
         accPasswd.text = "$passwd"
 
         // Create model
-        val accmodel = AccModelClass(accId, name, username, passwd)
+        val accmodel = AccModelClass(accId, name, username, passwd, profile)
 
         // Click event of back button
         backBtn.setOnClickListener {
@@ -85,7 +89,8 @@ class ViewAccountActivity : AppCompatActivity() {
                     accModelClass.id,
                     accModelClass.accName,
                     accModelClass.username,
-                    accModelClass.passwd
+                    accModelClass.passwd,
+                    accModelClass.profile
                 )
             )
 

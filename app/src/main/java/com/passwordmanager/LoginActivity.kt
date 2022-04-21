@@ -10,7 +10,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import at.favre.lib.crypto.bcrypt.BCrypt
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -27,10 +26,12 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        // database handler
+        val dbHandler = UserDbHandler(this)
+
         /**
          * REMOVE THIS AFTER TESTING
          */
-        //val dbHandler = UserDbHandler(this)
         //dbHandler.deleteAll()
 
         // get reference to elements
@@ -62,11 +63,6 @@ class LoginActivity : AppCompatActivity() {
                     val email: String = entEmail.text.toString().trim { it <= ' ' }
                     val password: String = entPassword.text.toString().trim { it <= ' ' }
 
-                    /**
-                     * hash password
-                     */
-                    //val passhash = BCrypt.withDefaults().hashToString(12, password.toCharArray())
-
                     // Create instance and login user with credentials
                     FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(
@@ -78,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
                                     // Firebase user
                                     val user: FirebaseUser = task.result!!.user!!
 
-                                    if (user.isEmailVerified) {
+                                    if (!user.isEmailVerified) {
                                         // re-direct to the main screen
                                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
 
@@ -114,7 +110,6 @@ class LoginActivity : AppCompatActivity() {
 
         // on click of register button
         register.setOnClickListener {
-            val dbHandler = UserDbHandler(this)
 
             // Check how many profiles exist
             val profileCount = dbHandler.getCount()
@@ -132,8 +127,6 @@ class LoginActivity : AppCompatActivity() {
 
         // Click event of password reset button
         forgotPassword.setOnClickListener {
-
-            val dbHandler = UserDbHandler(this)
 
             // if a user is registered on the device
             if (dbHandler.getCount() > 0) {

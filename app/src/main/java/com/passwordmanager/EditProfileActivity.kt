@@ -29,7 +29,6 @@ class EditProfileActivity : AppCompatActivity() {
 
         // get values from intent
         val email = intent.getStringExtra("username")
-        //val passwd = intent.getStringExtra("passwd")
 
         // get elements
         val etProfileEmail = findViewById<EditText>(R.id.et_profile_email)
@@ -41,7 +40,6 @@ class EditProfileActivity : AppCompatActivity() {
 
         // set field hints
         etProfileEmail.hint = email
-        //etPassword.hint = passwd
 
         // Create user model
         val userModel = UserModelClass(1, email!!)
@@ -61,7 +59,10 @@ class EditProfileActivity : AppCompatActivity() {
         // Click event of delete button
         deleteBtn.setOnClickListener {
 
+            // profile database handler
             val databaseHandlerProfile = UserDbHandler(this)
+
+            // account database handler
             val databaseHandlerAccount = AccountDbHandler(this)
 
             val builder = AlertDialog.Builder(this)
@@ -100,7 +101,6 @@ class EditProfileActivity : AppCompatActivity() {
                 // Set other dialog properties
                 alertDialog.setCancelable(false) // Will not allow user to cancel after clicking on remaining screen area.
                 alertDialog.show()
-
         }
 
         // Click event of password reset button
@@ -181,7 +181,7 @@ class EditProfileActivity : AppCompatActivity() {
         val newEmail = etProfileEmail.text.toString().trim { it <= ' ' }
         //val newPasswd = etPassword.text.toString().trim { it <= ' ' }
 
-        val databaseHandlerProfile: UserDbHandler = UserDbHandler(this)
+        val databaseHandlerProfile = UserDbHandler(this)
 
         // if text input is not empty, update user profile
         if (newEmail.isNotEmpty()) {

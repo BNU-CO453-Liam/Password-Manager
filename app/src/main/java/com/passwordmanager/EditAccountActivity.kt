@@ -8,6 +8,8 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.passwordmanager.handlers.AccountDbHandler
 import com.passwordmanager.models.AccModelClass
 
@@ -19,6 +21,8 @@ class EditAccountActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_account)
+
+        val profile = Firebase.auth.currentUser!!.uid
 
         // Get elements
         val accName = findViewById<EditText>(R.id.et_edit_acc_name)
@@ -41,7 +45,7 @@ class EditAccountActivity : AppCompatActivity() {
         accPasswd.hint = "$passwd"
 
         // Create model
-        val accmodel = AccModelClass(accId, name, username, passwd)
+        val accmodel = AccModelClass(accId, name, username, passwd, profile)
 
         // Click event of back button
         backBtn.setOnClickListener {
@@ -58,6 +62,8 @@ class EditAccountActivity : AppCompatActivity() {
      * Update account
      */
     private fun updateAccount(accModelClass: AccModelClass) {
+
+        val profile = Firebase.auth.currentUser!!.uid
 
         // get intent values
         val accId = intent.getIntExtra("id", 0)
@@ -94,7 +100,8 @@ class EditAccountActivity : AppCompatActivity() {
         }
 
         // create model
-        val accModel = AccModelClass(id = accId, accName = newAccName, username = newUsername, passwd = newPasswd)
+        val accModel = AccModelClass(id = accId, accName = newAccName, username = newUsername, passwd = newPasswd,
+        profile = profile)
 
         // if fields are not empty then update account
         val status = databaseHandlerAccount.updateAccount(accModel)

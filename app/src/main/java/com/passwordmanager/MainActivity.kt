@@ -1,7 +1,6 @@
 package com.passwordmanager
 
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,9 +10,10 @@ import com.google.firebase.auth.FirebaseAuth
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.passwordmanager.adapters.ItemAdapter
 import com.passwordmanager.handlers.AccountDbHandler
-import com.passwordmanager.handlers.UserDbHandler
 import com.passwordmanager.models.AccModelClass
 import kotlin.collections.ArrayList
 
@@ -62,27 +62,29 @@ class MainActivity : AppCompatActivity() {
         val recycler = findViewById<RecyclerView>(R.id.recycler_view_items)
         val noRecords = findViewById<TextView>(R.id.no_records)
 
-        if (getItemsList().size > 0) {
+        //creating the instance of DatabaseHandler class
+        val dbHandlerAccount = AccountDbHandler(this)
 
-            recycler.visibility = View.VISIBLE
-            noRecords.visibility = View.GONE
+        if (dbHandlerAccount.getCount() > 0 && !getItemsList(dbHandlerAccount).isNullOrEmpty()) {
 
-            // Set the LayoutManager that this RecyclerView will use.
-            recycler.layoutManager = LinearLayoutManager(this)
+                recycler.visibility = View.VISIBLE
+                noRecords.visibility = View.GONE
 
-            // Adapter class is initialized and list is passed in the param.
-            val itemAdapter = ItemAdapter(this, getItemsList())
+                // Set the LayoutManager that this RecyclerView will use.
+                recycler.layoutManager = LinearLayoutManager(this)
 
-            // Adapter instance is set to the recyclerview to inflate the items.
-            recycler.adapter = itemAdapter
+                // Adapter class is initialized and list is passed in the param.
+                val itemAdapter = ItemAdapter(this, getItemsList(dbHandlerAccount))
 
-            // Set on click event for recycler holder view
-            itemAdapter.setOnItemClickListener(object : ItemAdapter.onItemClickListener{
-                override fun onItemClick(position: Int) {
-                    doIntent(itemAdapter, position)
-                }
-            })
+                // Adapter instance is set to the recyclerview to inflate the items.
+                recycler.adapter = itemAdapter
 
+                // Set on click event for recycler holder view
+                itemAdapter.setOnItemClickListener(object : ItemAdapter.onItemClickListener{
+                    override fun onItemClick(position: Int) {
+                        doIntent(itemAdapter, position)
+                    }
+                })
         } else {
 
             recycler.visibility = View.GONE
@@ -111,13 +113,10 @@ class MainActivity : AppCompatActivity() {
     /**
      * Function is used to get the Items List added in the database table.
      */
-    private fun getItemsList(): ArrayList<AccModelClass> {
-
-        //creating the instance of DatabaseHandler class
-        val databaseHandlerAccount = AccountDbHandler(this)
+    private fun getItemsList(db: AccountDbHandler): ArrayList<AccModelClass> {
 
         // read the records
-        val accList: ArrayList<AccModelClass> = databaseHandlerAccount.viewAccount()
+        val accList: ArrayList<AccModelClass> = db.viewAccount()
 
         return accList
     }

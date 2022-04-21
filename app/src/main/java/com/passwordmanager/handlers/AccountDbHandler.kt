@@ -4,9 +4,12 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.database.DatabaseUtils
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.passwordmanager.models.AccModelClass
 
 // Set up database logic
@@ -22,13 +25,14 @@ class AccountDbHandler(context: Context) :
             private const val KEY_NAME = "name"
             private const val KEY_USERNAME = "username"
             private const val KEY_PASSWD = "password"
+            private const val KEY_CURRENT_PROFILE = "profile"
         }
 
         override fun onCreate(db: SQLiteDatabase?) {
             // create table and fields
             val CREATE_ACCOUNTS_TABLE = ("CREATE TABLE " + TABLE_ACCOUNTS + "("
                     + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                    + KEY_USERNAME + " TEXT," + KEY_PASSWD + " TEXT)")
+                    + KEY_USERNAME + " TEXT," + KEY_PASSWD + " TEXT," + KEY_CURRENT_PROFILE + " TEXT)")
             db?.execSQL(CREATE_ACCOUNTS_TABLE)
         }
 
@@ -50,6 +54,7 @@ class AccountDbHandler(context: Context) :
             contentValues.put(KEY_NAME, acc.accName)
             contentValues.put(KEY_USERNAME, acc.username)
             contentValues.put(KEY_PASSWD, acc.passwd)
+            contentValues.put(KEY_CURRENT_PROFILE, acc.profile)
 
             // Insert account details using insert query.
             val success = db.insert(TABLE_ACCOUNTS, null, contentValues)
@@ -65,10 +70,12 @@ class AccountDbHandler(context: Context) :
     @SuppressLint("Range")
     fun viewAccount(): ArrayList<AccModelClass> {
 
+        val profile = Firebase.auth.currentUser!!.uid
+
         val accList: ArrayList<AccModelClass> = ArrayList<AccModelClass>()
 
         // Query to select all the records from the table.
-        val selectQuery = "SELECT  * FROM $TABLE_ACCOUNTS"
+        val selectQuery = "SELECT  * FROM $TABLE_ACCOUNTS WHERE $KEY_CURRENT_PROFILE = '$profile'"
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
@@ -94,7 +101,7 @@ class AccountDbHandler(context: Context) :
                 username = cursor.getString(cursor.getColumnIndex(KEY_USERNAME))
                 passwd = cursor.getString(cursor.getColumnIndex(KEY_PASSWD))
 
-                val acc = AccModelClass(id = id, accName = name, username = username, passwd = passwd)
+                val acc = AccModelClass(id = id, accName = name, username = username, passwd = passwd, profile = profile)
                 accList.add(acc)
 
             } while (cursor.moveToNext())
@@ -138,5 +145,15 @@ class AccountDbHandler(context: Context) :
     fun deleteAll() {
         val db = this.writableDatabase
         val removeAccounts = db.execSQL("DELETE FROM $TABLE_ACCOUNTS")
+    }
+
+    /**
+     * Get row count
+     */
+    fun getCount(): Int {
+        val count: Long = DatabaseUtils.queryNumEntries(this.readableDatabase,
+            AccountDbHandler.TABLE_ACCOUNTS
+        )
+        return count.toInt()
     }
 }

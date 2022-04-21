@@ -28,8 +28,8 @@ class ViewProfileActivity : AppCompatActivity() {
         /**
          * REMOVE THIS AFTER TESTING
          */
-        val dbHandler: UserDbHandler = UserDbHandler(this)
-        dbHandler.deleteAll()
+        //val dbHandler: UserDbHandler = UserDbHandler(this)
+        //dbHandler.deleteAll()
 
         getInfo()
 

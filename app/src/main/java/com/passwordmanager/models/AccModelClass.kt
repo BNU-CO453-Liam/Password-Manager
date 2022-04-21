@@ -6,9 +6,10 @@ import android.os.Parcelable
 /**
  * Password account model class
  */
-class AccModelClass(val id: Int, val accName: String?, val username: String?, val passwd: String?) : Parcelable {
+class AccModelClass(val id: Int, val accName: String?, val username: String?, val passwd: String?, val profile: String?) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString()
@@ -20,6 +21,7 @@ class AccModelClass(val id: Int, val accName: String?, val username: String?, va
         parcel.writeString(accName)
         parcel.writeString(username)
         parcel.writeString(passwd)
+        parcel.writeString(profile)
     }
 
     override fun describeContents(): Int {
