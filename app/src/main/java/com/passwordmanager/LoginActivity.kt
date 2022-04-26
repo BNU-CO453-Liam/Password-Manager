@@ -29,11 +29,6 @@ class LoginActivity : AppCompatActivity() {
         // database handler
         val dbHandler = UserDbHandler(this)
 
-        /**
-         * REMOVE THIS AFTER TESTING
-         */
-        //dbHandler.deleteAll()
-
         // get reference to elements
         val button = findViewById<Button>(R.id.btn_login)
         val entEmail = findViewById<EditText>(R.id.tx_login_email)
