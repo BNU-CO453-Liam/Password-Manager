@@ -79,13 +79,13 @@ class AddAccountActivity : AppCompatActivity() {
         }
 
         // Click event of save button.
-        saveBtn.setOnClickListener { view ->
+        saveBtn.setOnClickListener {
             addRecord()
         }
     }
 
     /**
-     * Generate a password
+     * Generate a strong password
      */
     private fun generatePassword(): String {
         val characterSet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@£$%^&*()_+"

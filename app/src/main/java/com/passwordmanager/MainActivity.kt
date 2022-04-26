@@ -10,8 +10,6 @@ import com.google.firebase.auth.FirebaseAuth
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.passwordmanager.adapters.ItemAdapter
 import com.passwordmanager.handlers.AccountDbHandler
 import com.passwordmanager.models.AccModelClass
@@ -116,9 +114,7 @@ class MainActivity : AppCompatActivity() {
     private fun getItemsList(db: AccountDbHandler): ArrayList<AccModelClass> {
 
         // read the records
-        val accList: ArrayList<AccModelClass> = db.viewAccount()
-
-        return accList
+        return db.viewAccount()
     }
 }
 

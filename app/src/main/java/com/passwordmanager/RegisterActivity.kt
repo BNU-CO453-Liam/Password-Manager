@@ -92,16 +92,6 @@ class RegisterActivity : AppCompatActivity() {
                             "You have been registered successfully.",
                             Toast.LENGTH_SHORT
                         ).show()
-
-
-                        // Re-direct to the main screen with user id and email used for registration
-                        //val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-
-                        //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        //intent.putExtra("user_id", firebaseUser.uid)
-                        //intent.putExtra("email_id", email)
-                        //startActivity(intent)
-                        //finish()
                     } else {
                         // If register unsuccessful display error
                         Toast.makeText(
@@ -122,11 +112,9 @@ class RegisterActivity : AppCompatActivity() {
 
         // get elements
         val entEmail = findViewById<EditText>(R.id.tx_register_email)
-        val entPassword = findViewById<EditText>(R.id.tx_register_password)
 
         // set values to user input
         val profileUserName = entEmail.text.toString().trim()
-        //var profilePasswd = entPassword.text.toString().trim()
 
         // if fields are not empty, add profile to local database
         if (profileUserName.isNotEmpty()) {

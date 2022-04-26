@@ -9,7 +9,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -175,11 +174,9 @@ class EditProfileActivity : AppCompatActivity() {
 
         // get elements
         val etProfileEmail = findViewById<EditText>(R.id.et_profile_email)
-        val etPassword = findViewById<TextView>(R.id.tv_profile_passwd)
 
         // set values of text input
         val newEmail = etProfileEmail.text.toString().trim { it <= ' ' }
-        //val newPasswd = etPassword.text.toString().trim { it <= ' ' }
 
         val databaseHandlerProfile = UserDbHandler(this)
 

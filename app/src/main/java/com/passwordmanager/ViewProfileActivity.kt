@@ -3,11 +3,13 @@ package com.passwordmanager
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -24,12 +26,6 @@ class ViewProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_profile)
-
-        /**
-         * REMOVE THIS AFTER TESTING
-         */
-        //val dbHandler: UserDbHandler = UserDbHandler(this)
-        //dbHandler.deleteAll()
 
         getInfo()
 
@@ -51,6 +47,7 @@ class ViewProfileActivity : AppCompatActivity() {
 
         // Click event of edit profile button
         editBtn.setOnClickListener {
+
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Confirm")
                 .setMessage("Are you sure you want to edit your profile?")

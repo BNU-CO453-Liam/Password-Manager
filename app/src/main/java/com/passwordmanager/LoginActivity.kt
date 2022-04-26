@@ -74,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
                                     // Firebase user
                                     val user: FirebaseUser = task.result!!.user!!
 
-                                    if (!user.isEmailVerified) {
+                                    if (user.isEmailVerified) {
                                         // re-direct to the main screen
                                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
 

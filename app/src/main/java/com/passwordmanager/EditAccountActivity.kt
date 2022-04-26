@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.ktx.auth
@@ -45,7 +44,7 @@ class EditAccountActivity : AppCompatActivity() {
         accPasswd.hint = "$passwd"
 
         // Create model
-        val accmodel = AccModelClass(accId, name, username, passwd, profile)
+        val accModel = AccModelClass(accId, name, username, passwd, profile)
 
         // Click event of back button
         backBtn.setOnClickListener {
@@ -54,7 +53,7 @@ class EditAccountActivity : AppCompatActivity() {
 
         // Click event of update button
         updateBtn.setOnClickListener {
-            updateAccount(accmodel)
+            updateAccount(accModel)
         }
     }
 
@@ -121,6 +120,5 @@ class EditAccountActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
         }
-
     }
 }

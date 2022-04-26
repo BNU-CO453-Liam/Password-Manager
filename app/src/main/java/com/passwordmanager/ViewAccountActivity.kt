@@ -58,7 +58,6 @@ class ViewAccountActivity : AppCompatActivity() {
             intent.putExtra("passwd", passwd)
 
             startActivity(intent)
-            // flag maybe
         }
 
         // Click event of delete button
